@@ -1,0 +1,25 @@
+.top{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
+}
+.MuiAvatar-img{
+    object-fit: contain;
+}
+.cancel-icon{
+    margin-left: auto;
+}
+.gapping{
+    margin-left:5% ;
+    margin-right: 5%;
+}
+.noti-cursor{
+    cursor:default;
+}
+.icon-cursor:hover{
+    cursor:pointer;
+}
+.simplebar-content{
+    background-color: #6fb3b88f;
+}
