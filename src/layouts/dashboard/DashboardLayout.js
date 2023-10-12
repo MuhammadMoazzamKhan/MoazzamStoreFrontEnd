@@ -12,7 +12,7 @@ const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 92;
 
 const StyledRoot = styled('div')({
-  backgroundColor:"#BADFE7",
+  background: "linear-gradient(90deg, #f8ff00 0%, #3ad59f 100%)",
   display: 'flex',
   minHeight: '100%',
   overflow: 'hidden',

@@ -36,7 +36,7 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
   const {setFilter,filter,filtration} = context;
   
   useEffect(()=>{
-    filtration()
+    // filtration()
   },[filter])
   
   return (

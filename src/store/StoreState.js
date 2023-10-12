@@ -9,6 +9,7 @@ const StoreState = (props) => {
 
     const getProducts = async () => {
         const response = await axios.get(`https://fakestoreapi.com/products/`)
+        console.log(response.data)
         setProduct(response.data)
     }
     const filtration = async () => {
@@ -22,9 +23,9 @@ const StoreState = (props) => {
     }
     const searchProduct = (value)=>{
         if(value.length > 1){
-            const result = product.filter((v,i)=>{
-                return value && v.title && v.title.toLowerCase().includes(value)
-            })
+            const result = product.filter((v)=>
+                value && v.title && v.title.toLowerCase().includes(value)
+            )
             setProduct(result)
         }else{
             getProducts()

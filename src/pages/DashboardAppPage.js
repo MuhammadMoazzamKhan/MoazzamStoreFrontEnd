@@ -1,9 +1,12 @@
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from "axios";
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
-import { useEffect,useContext } from 'react';
+import { useEffect, useContext } from 'react';
+import { allProductFail, allProductRequest, allProductSeccess, clearError } from "../reduxStore/slice/ProductSlice";
 // components
 import Iconify from '../components/iconify';
 // sections
@@ -25,10 +28,24 @@ import storeContext from '../store/storeContext';
 export default function DashboardAppPage() {
   const theme = useTheme();
   const { getProducts } = useContext(storeContext)
+  // const { product } = useSelector((state) => state.product)
+  // const { productCount, products, success } = product;
 
-  useEffect(()=>{
-    getProducts()
-  },[])
+  const dispatch = useDispatch()
+  const getAllProduct = async () => {
+    try {
+      await dispatch(allProductRequest())
+        const {data} = await axios('http://localhost:8000/api/v1/products')
+        await dispatch(allProductSeccess({product:data,productsCount: data.productCount}))
+    } catch (error) {
+        console.log(error)
+        dispatch(allProductFail({error : error.response}))
+    }
+}
+  useEffect(() => { 
+    getAllProduct()
+  }, [dispatch])
+
   return (
     <>
       <Helmet>
