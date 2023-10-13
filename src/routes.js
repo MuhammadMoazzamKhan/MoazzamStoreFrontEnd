@@ -26,7 +26,7 @@ export default function Router() {
         { path: "app", element: <DashboardAppPage /> },
         { path: 'login', element: <LoginPage /> },
         { path: 'register', element: <RegisterPage /> },
-        { path: "products/card", element: <CardDetails /> },
+        { path: "products/detail/:name", element: <CardDetails /> },
       ],
     },
     {

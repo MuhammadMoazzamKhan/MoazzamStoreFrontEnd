@@ -8,6 +8,7 @@ import { useContext, useState } from 'react';
 import * as React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import { useNavigate } from 'react-router-dom';
 import { fCurrency } from '../../../utils/formatNumber';
 // components
 import Label from '../../../components/label';
@@ -48,8 +49,11 @@ export default function ShopProductCard({ product }) {
   const [openFilter, setOpenFilter] = useState(false);
   const [open, setOpen] = useState(false);
   const { setCart } = useContext(storeContext)
+  const navigate = useNavigate();
 
-
+  const navigateToDetail = ()=>{
+    navigate(`/dashboard/products/detail/${product.name}`)
+  }
 
   const handleOpenFilter = () => {
     setOpenFilter(true);
@@ -58,20 +62,19 @@ export default function ShopProductCard({ product }) {
   const handleCloseFilter = () => {
     setOpenFilter(false);
   };
-  const { title, image, price, rating, id } = product;
-
-  const addCart = () => {
-    const cartData = JSON.parse(localStorage.getItem("cart")) || [];
-    const index = cartData.findIndex(i => i.id === product.id);
-    if (index !== -1) {
-      cartData.splice(index, 1, { ...cartData[index], qty: cartData[index].qty + 1 })
-    } else {
-      cartData.push({ ...product, qty: 1 })
-    }
-    localStorage.setItem("cart", JSON.stringify(cartData))
-    setCart(cartData)
-    setOpen(true)
-  }
+  const { name, images, price, ratings, _id } = product;
+  // const addCart = () => {
+  //   const cartData = JSON.parse(localStorage.getItem("cart")) || [];
+  //   const index = cartData.findIndex(i => i._id === product._id);
+  //   if (index !== -1) {
+  //     cartData.splice(index, 1, { ...cartData[index], qty: cartData[index].qty + 1 })
+  //   } else {
+  //     cartData.push({ ...product, qty: 1 })
+  //   }
+  //   localStorage.setItem("cart", JSON.stringify(cartData))
+  //   setCart(cartData)
+  //   setOpen(true)
+  // }
 
 
   const stating = ["sale", "new"];
@@ -97,13 +100,13 @@ export default function ShopProductCard({ product }) {
             {status}
           </Label>
         )}
-        <StyledProductImg alt={title} src={image} />
+        <StyledProductImg alt={name} src={images[0].url} />
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
         <Link color="inherit" underline="hover">
           <Typography variant="subtitle1" noWrap>
-            {title}
+            {name}
           </Typography>
         </Link>
 
@@ -111,7 +114,7 @@ export default function ShopProductCard({ product }) {
           <Typography noWrap>
             <ReactStars
               edit={false}
-              value={rating.rate}
+              value={ratings || 3.5}
               size={20}
             />
           </Typography>
@@ -137,18 +140,18 @@ export default function ShopProductCard({ product }) {
           </Typography>
         </Stack>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Button variant="contained" sx={{ backgroundColor: '#388087' }} onClick={addCart}>
+          <Button variant="contained" sx={{ backgroundColor: '#388087' }}>
             Add Cart
           </Button>
-          <Button onClick={handleOpenFilter} sx={{ backgroundColor: '#C2EDCE', color: "black" }} variant="outlined">
+          <Button onClick={navigateToDetail} sx={{ backgroundColor: '#C2EDCE', color: "black" }} variant="outlined">
             Details
           </Button>
-          <CartDetails
+          {/* <CartDetails
             openFilter={openFilter}
             onCloseFilter={handleCloseFilter}
             cartData={product}
             disRate={rate}
-          />
+          /> */}
         </Stack>
         <Snackbar className='top' anchorOrigin={{ vertical: "bottom", horizontal: "center" }} open={open} autoHideDuration={6000} onClose={() => { setOpen(false) }}>
           <Alert onClose={() => { setOpen(false) }} severity="info"

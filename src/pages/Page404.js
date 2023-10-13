@@ -24,7 +24,6 @@ export default function Page404() {
       <Helmet>
         <title> 404 Page Not Found | Moazzam Store </title>
       </Helmet>
-
       <Container>
         <StyledContent sx={{ textAlign: 'center', alignItems: 'center' }}>
           <Typography variant="h3" paragraph>
