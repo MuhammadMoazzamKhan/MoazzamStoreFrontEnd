@@ -51,9 +51,7 @@ export default function ShopProductCard({ product }) {
   const { setCart } = useContext(storeContext)
   const navigate = useNavigate();
 
-  const navigateToDetail = ()=>{
-    navigate(`/dashboard/products/detail/${product.name}`)
-  }
+  
 
   const handleOpenFilter = () => {
     setOpenFilter(true);
@@ -62,7 +60,10 @@ export default function ShopProductCard({ product }) {
   const handleCloseFilter = () => {
     setOpenFilter(false);
   };
-  const { name, images, price, ratings, _id } = product;
+  const { name, images, price, ratings, _id,numOfReviews } = product;
+  const navigateToDetail = ()=>{
+    navigate(`/dashboard/products/detail/${_id}`)
+  }
   // const addCart = () => {
   //   const cartData = JSON.parse(localStorage.getItem("cart")) || [];
   //   const index = cartData.findIndex(i => i._id === product._id);
@@ -79,7 +80,7 @@ export default function ShopProductCard({ product }) {
 
   const stating = ["sale", "new"];
   const status = stating[Math.round(Math.random() * stating.length)]
-  const pricing = [price + Math.ceil(Math.random() * 50), false]
+  const pricing = [price + Math.ceil(Math.random() * 1.2), false]
   const rate = pricing[Math.round(Math.random() * pricing.length)]
 
   return (
@@ -136,7 +137,7 @@ export default function ShopProductCard({ product }) {
         </Stack>
         <Stack>
           <Typography variant="subtitle2" noWrap>
-            Reviews (200)
+            Reviews ({numOfReviews})
           </Typography>
         </Stack>
         <Stack direction="row" alignItems="center" justifyContent="space-between">

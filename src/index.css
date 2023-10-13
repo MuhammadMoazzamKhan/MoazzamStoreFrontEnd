@@ -1,25 +1,54 @@
-.top{
+* {
+    margin: 0;
+    scroll-behavior: smooth;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.greenColor{
+    color: green;
+}
+
+.redColor{
+    color: red;
+}
+
+.top {
     position: absolute;
     bottom: 0;
     width: 100%;
     overflow: hidden;
 }
-.MuiAvatar-img{
+
+.MuiAvatar-img {
     object-fit: contain;
 }
-.cancel-icon{
+
+.cancel-icon {
     margin-left: auto;
 }
-.gapping{
-    margin-left:5% ;
+
+.gapping {
+    margin-left: 5%;
     margin-right: 5%;
 }
-.noti-cursor{
-    cursor:default;
+
+.noti-cursor {
+    cursor: default;
 }
-.icon-cursor:hover{
-    cursor:pointer;
+
+.icon-cursor:hover {
+    cursor: pointer;
 }
-.simplebar-content{
+
+.simplebar-content {
     background: linear-gradient(90deg, #FDBB2D 0%, #22C1C3 100%);
 }

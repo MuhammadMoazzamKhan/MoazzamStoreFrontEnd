@@ -1,0 +1,15 @@
+.carousel{ 
+     width: 20vmax !important;
+}
+.carousel-item > img{
+    width: 100% !important;
+}
+
+
+@media screen and (max-width:600px) {
+    .carousel{ 
+        width: 30vmax !important;
+   }
+
+
+}

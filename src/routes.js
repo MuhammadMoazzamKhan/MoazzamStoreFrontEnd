@@ -9,8 +9,8 @@ import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
-import CardDetails from './pages/CardDetails';
 import RegisterPage from './pages/Register';
+import CartDetails from './pages/CartDetails/CartDetails';
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ export default function Router() {
         { path: "app", element: <DashboardAppPage /> },
         { path: 'login', element: <LoginPage /> },
         { path: 'register', element: <RegisterPage /> },
-        { path: "products/detail/:name", element: <CardDetails /> },
+        { path: "products/detail/:id", element: <CartDetails /> },
       ],
     },
     {

@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 // @mui
 import { Container, Stack, Typography } from '@mui/material';
 import { allProductRequest, allProductSeccess, allProductFail } from '../reduxStore/slice/ProductSlice';
-import { productDetailsRequest, productDetailsSeccess, productDetailsFail, clearError } from '../reduxStore/slice/ProductDetailSlice'
 import storeContext from '../store/storeContext';
 
 // components
