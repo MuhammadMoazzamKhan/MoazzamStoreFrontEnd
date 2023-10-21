@@ -8,24 +8,32 @@ import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function LoginForm() {
+export default function LoginForm({fetchDataToChild}) {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [inputsValue, setInputsValue] = useState({email: "", password: '' });
 
-  const handleClick = () => {
-    navigate('/dashboard', { replace: true });
+  const onChange = (e) => {
+    setInputsValue({...inputsValue,[e.target.name]: e.target.value})
+  }
+
+  const loginForm = (e) => {
+    e.preventDefault();
+    fetchDataToChild(inputsValue)
   };
 
   return (
     <>
-      <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
+          <form  className='fromhere' onSubmit={loginForm}>
+
+        <TextField name="email" required onChange={onChange} label="Email address" />
 
         <TextField
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
+          onChange={onChange}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -35,8 +43,8 @@ export default function LoginForm() {
               </InputAdornment>
             ),
           }}
+          required
         />
-      </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
         <Checkbox name="remember" label="Remember me" />
@@ -45,9 +53,10 @@ export default function LoginForm() {
         </Link>
       </Stack>
 
-      <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
+      <LoadingButton fullWidth size="large" type="submit" variant="contained">
         Login
       </LoadingButton>
+      </form>
     </>
   );
 }

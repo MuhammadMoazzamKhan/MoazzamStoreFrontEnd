@@ -15,10 +15,12 @@ const productSlice = createSlice({
             state.loading = true
                 state.product = []
         },
-        allProductSeccess(state, action) {
+        allProductSuccess(state, action) {
             state.loading = false
                 state.product = action.payload.product
                 state.productsCount = action.payload.productsCount
+                state.resultPerPage = action.payload.resultPerPage
+                state.filterProductCount = action.payload.filterProductCount
         },
         allProductFail(state, action) {
             state.loading = false
@@ -37,4 +39,4 @@ const productSlice = createSlice({
 
 export default productSlice.reducer;
 
-export const { allProductRequest, allProductSeccess, allProductFail, clearError } = productSlice.actions; 
+export const { allProductRequest, allProductSuccess, allProductFail, clearError } = productSlice.actions; 

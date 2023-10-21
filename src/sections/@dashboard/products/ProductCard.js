@@ -115,7 +115,7 @@ export default function ShopProductCard({ product }) {
           <Typography noWrap>
             <ReactStars
               edit={false}
-              value={ratings || 3.5}
+              value={ratings}
               size={20}
             />
           </Typography>

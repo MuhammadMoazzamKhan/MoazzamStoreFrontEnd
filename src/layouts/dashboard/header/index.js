@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
@@ -43,6 +44,8 @@ Header.propTypes = {
 };
 
 export default function Header({ onOpenNav }) {
+  const { isAuthenticated  } = useSelector(state => state.user);
+
   return (
     <StyledRoot>
       <StyledToolbar>
@@ -68,8 +71,8 @@ export default function Header({ onOpenNav }) {
             sm: 1,
           }}
         >
-          <NotificationsPopover />
-          <AccountPopover />
+          {isAuthenticated && <> <NotificationsPopover />
+            <AccountPopover /> </>}
         </Stack>
       </StyledToolbar>
     </StyledRoot>

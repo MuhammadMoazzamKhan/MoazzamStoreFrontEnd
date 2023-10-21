@@ -5,9 +5,6 @@ import { useLocation } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
 import { BsLinkedin, BsGithub } from "react-icons/bs"
-
-// mock
-import account from '../../../_mock/account';
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
 // components
@@ -20,14 +17,6 @@ import navConfig from './config';
 // ----------------------------------------------------------------------
 
 const NAV_WIDTH = 280;
-
-const StyledAccount = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(2, 2.5),
-  borderRadius: Number(theme.shape.borderRadius) * 1.5,
-  backgroundColor: alpha(theme.palette.grey[500], 0.12)
-}));
 
 // ----------------------------------------------------------------------
 

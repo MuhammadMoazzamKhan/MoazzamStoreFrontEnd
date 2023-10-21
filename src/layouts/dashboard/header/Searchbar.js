@@ -1,13 +1,13 @@
-import { useContext, useEffect, useState } from 'react';
+import {  useState } from 'react';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Input, Slide, Button, IconButton, InputAdornment, ClickAwayListener } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 // utils
 import { bgBlur } from '../../../utils/cssStyles';
 // component
 import Iconify from '../../../components/iconify';
-import storeContext from '../../../store/storeContext';
 
 // ----------------------------------------------------------------------
 
@@ -37,13 +37,15 @@ const StyledSearchbar = styled('div')(({ theme }) => ({
 export default function Searchbar() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
-  const context = useContext(storeContext);
-  const {searchProduct,getProducts} = context
-   useEffect(()=>{
-    if(input){
-      searchProduct(input)
+  const navigate = useNavigate();
+  
+  const navigateHandler = e =>{
+    if(input.trim()){
+      navigate(`/dashboard/products/${input}`)
+    }else{
+      navigate('/dashboard/products')
     }
-   },[input])
+  }
 
   const handleOpen = () => {
     setOpen(!open);
@@ -63,7 +65,7 @@ export default function Searchbar() {
         )}
 
         <Slide direction="down" in={open} mountOnEnter unmountOnExit>
-          <StyledSearchbar>
+          <StyledSearchbar >
             <Input
               autoFocus
               fullWidth
@@ -78,7 +80,7 @@ export default function Searchbar() {
               }
               sx={{ mr: 1, fontWeight: 'fontWeightBold' }}
             />
-            <Button variant="contained" sx={{backgroundColor:'#388087'}} onClick={handleClose}>
+            <Button variant="contained" sx={{backgroundColor:'#388087'}} onClick={()=>{ navigateHandler();handleClose() } }>
               Search
             </Button>
           </StyledSearchbar>

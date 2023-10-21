@@ -1,16 +1,16 @@
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import './LogandSig.css'
 // @mui
 import { styled } from '@mui/material/styles';
 import { Link, Container, Typography, Divider, Stack, Button } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 // hooks
-import useResponsive from '../hooks/useResponsive';
-import img from "../Images/logo-search-grid-1x.png"
-// components
-import Logo from '../components/logo';
-import Iconify from '../components/iconify';
-// sections
-import { RegisterForm } from '../sections/auth/login';
+import useResponsive from '../../hooks/useResponsive';
+
+import { RegisterForm } from '../../sections/auth/login';
+import Loading from '../Loader/Loading';
 
 // ----------------------------------------------------------------------
 
@@ -44,26 +44,35 @@ const StyledContent = styled('div')(({ theme }) => ({
 
 export default function RegisterPage() {
   const mdUp = useResponsive('up', 'md');
+  const navigate = useNavigate()
+  const { loading, isAuthenticated, user, error } = useSelector(state => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard/account")
+    }
+  }, [dispatch, isAuthenticated])
 
   return (
     <>
       <Helmet>
         <title> Login | Moazzam Store </title>
       </Helmet>
+      {loading? <Loading /> :
+        <StyledRoot>
+          <Container maxWidth="sm">
+            <StyledContent>
+              <Typography variant="h4" gutterBottom>
+                Sign up to Minimal
+              </Typography>
 
-      <StyledRoot>
-        <Container maxWidth="sm">
-          <StyledContent>
-            <Typography variant="h4" gutterBottom>
-              Sign in to Minimal
-            </Typography>
+              <Typography variant="body2" sx={{ mb: 5 }}>
+                Already have an account? {''}
+                <NavLink to="/dashboard/login" variant="subtitle2">Get started</NavLink>
+              </Typography>
 
-            <Typography variant="body2" sx={{ mb: 5 }}>
-              Already have an account? {''}
-              <NavLink to="/dashboard/login" variant="subtitle2">Get started</NavLink>
-            </Typography>
-
-            <Stack direction="row" spacing={2}>
+              {/* <Stack direction="row" spacing={2}>
               <Button fullWidth size="large" color="inherit" variant="outlined">
                 <Iconify icon="eva:google-fill" color="#DF3E30" width={22} height={22} />
               </Button>
@@ -75,18 +84,18 @@ export default function RegisterPage() {
               <Button fullWidth size="large" color="inherit" variant="outlined">
                 <Iconify icon="eva:twitter-fill" color="#1C9CEA" width={22} height={22} />
               </Button>
-            </Stack>
+            </Stack> */}
 
-            <Divider sx={{ my: 3 }}>
+              {/* <Divider sx={{ my: 3 }}>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                 OR
               </Typography>
-            </Divider>
+            </Divider> */}
 
-            <RegisterForm />
-          </StyledContent>
-        </Container>
-      </StyledRoot>
+              <RegisterForm />
+            </StyledContent>
+          </Container>
+        </StyledRoot>}
     </>
   );
 }

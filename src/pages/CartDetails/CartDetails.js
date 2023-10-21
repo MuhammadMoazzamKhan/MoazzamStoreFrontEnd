@@ -24,7 +24,7 @@ const CartDetails = () => {
       await dispatch(productDetailsSeccess({ product: data.product }))
     } catch (error) {
       console.log(error)
-      dispatch(productDetailsFail({ error: error.response }))
+      dispatch(productDetailsFail({ error: error.response.data }))
     }
   }
   useEffect(() => {

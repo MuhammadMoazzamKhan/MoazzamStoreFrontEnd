@@ -1,0 +1,74 @@
+.css-18yadix {
+    padding: 0;
+    min-height: 0vh;
+}
+
+.fromhere {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+#registerImage {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#registerImage>img {
+    width: 3vmax;
+    border-radius: 100%;
+}
+
+#registerImage>input {
+    display: flex;
+    padding: 0;
+}
+
+#registerImage>input::file-selector-button {
+    cursor: pointer;
+    height: 7vh;
+    width: 100%;
+    border: none;
+    margin: 0%;
+    z-index: 2;
+    font: 400 1.2vmax cursive;
+    padding: 0 1vmax;
+    color: rgba(0, 0, 0, 0.623);
+    transition: all 0.5s;
+    background-color: rgb(255, 255, 255);
+}
+
+#registerImage>input::file-selector-button:hover{
+    background-color: rgb(235, 235, 235);
+}
+
+@media screen and (max-width:1108px){
+    #registerImage>img {
+        width: 5vmax;
+        border-radius: 100%;
+    }
+    #registerImage>input::file-selector-button {
+        z-index: 2;
+        font: 400 1.6vmax cursive;
+    }
+}
+@media screen and (max-width:800px){
+    #registerImage>img {
+        width: 6vmax;
+        border-radius: 100%;
+    }
+    #registerImage>input::file-selector-button {
+        font: 400 2.4vmax cursive;
+    }
+}
+@media screen and (max-width:600px){
+    #registerImage>img {
+        width: 6vmax;
+        border-radius: 100%;
+    }
+    #registerImage>input::file-selector-button {
+        font: 400 2.4vmax cursive;
+    }
+}

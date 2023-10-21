@@ -1,39 +1,93 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 // @mui
 import { alpha } from '@mui/material/styles';
-import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
-// mocks_
-import account from '../../../_mock/account';
+import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover, ListItemIcon } from '@mui/material';
+import { BiSolidDashboard } from 'react-icons/bi'
+import { AiFillHome } from 'react-icons/ai'
+import { ImProfile } from 'react-icons/im'
+import { TbLogout } from 'react-icons/tb'
+import axios from 'axios';
+import { logoutFail, logoutSuccess } from '../../../reduxStore/slice/UserSlice';
 
 // ----------------------------------------------------------------------
 
-const MENU_OPTIONS = [
-  {
-    label: 'Home',
-    icon: 'eva:home-fill',
-  },
-  {
-    label: 'Profile',
-    icon: 'eva:person-fill',
-  },
-  {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
-  },
-];
+
+
+
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const navigate = useNavigate()
+  const { user } = useSelector(state => state.user);
   const [open, setOpen] = useState(null);
+  const dispatch = useDispatch()
+
+  const logout = async () => {
+    try {
+      const {data} = await axios.post('http://localhost:8000/api/v1/logout',{ withCredentials: true });
+      dispatch(logoutSuccess())
+    } catch (error) {
+      dispatch(logoutFail({ error: error.response.data }))
+    }
+  }
+
+  const home = () => {
+    navigate('/dashboard/products')
+    handleClose()
+  }
+
+  const profile = () => {
+    navigate('/dashboard/account')
+    handleClose()
+  }
+
+  const logoutbtn = () => {
+    logout()
+    handleClose()
+  }
+
+  const dashboard = () => {
+    navigate('/dashboard/app')
+    handleClose()
+  }
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
+  const MENU_OPTIONS = [
+    {
+      label: 'Home',
+      icon: <AiFillHome />,
+      func: home
+    },
+    {
+      label: 'Profile',
+      icon: <ImProfile />,
+      func: profile
+    },
+    {
+      label: 'Logout',
+      icon: <TbLogout size={18} />,
+      func: logoutbtn
+    }
+  ];
+
+  if (user.user.role === "admin") {
+    MENU_OPTIONS.unshift({
+      label: 'Dashboard',
+      icon: <BiSolidDashboard />,
+      func: dashboard
+    })
+  }
   const handleClose = () => {
     setOpen(null);
   };
+
+
 
   return (
     <>
@@ -54,7 +108,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        <Avatar src={user.user.avatar.url} alt={user.user.name} />
       </IconButton>
 
       <Popover
@@ -78,10 +132,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {user.user.name}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {user.user.email}
           </Typography>
         </Box>
 
@@ -89,17 +143,14 @@ export default function AccountPopover() {
 
         <Stack sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={handleClose}>
-              {option.label}
+            <MenuItem key={option.label} onClick={option.func}>
+              <ListItemIcon>
+                {option.icon && option.icon}
+              </ListItemIcon>
+              <Typography variant="inherit">{option.label}</Typography>
             </MenuItem>
           ))}
         </Stack>
-
-        <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <MenuItem onClick={handleClose} sx={{ m: 1 }}>
-          Logout
-        </MenuItem>
       </Popover>
     </>
   );

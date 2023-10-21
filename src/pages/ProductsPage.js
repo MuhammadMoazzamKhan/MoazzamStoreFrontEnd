@@ -1,12 +1,12 @@
 import { Helmet } from 'react-helmet-async';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from "axios";
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 // @mui
+import Pagination from '@mui/material/Pagination';
 import { Container, Stack, Typography } from '@mui/material';
-import { allProductRequest, allProductSeccess, allProductFail } from '../reduxStore/slice/ProductSlice';
-import storeContext from '../store/storeContext';
-
+import { allProductRequest, allProductSuccess, allProductFail } from '../reduxStore/slice/ProductSlice';
 // components
 import { ProductList, ProductFilterSidebar } from '../sections/@dashboard/products';
 import Loading from './Loader/Loading';
@@ -14,31 +14,50 @@ import Loading from './Loader/Loading';
 
 export default function ProductsPage() {
 
-
-  const { error, product, success, productsCount, loading } = useSelector(state => state.product)
   const dispatch = useDispatch()
-  const getAllProduct = async () => {
+  const [sliderPrice, setSliderPrice] =useState({ price: [0,25000], category: '', rating: 0 });
+
+  const { error, product, success, productsCount, loading, resultPerPage, filterProductCount } = useSelector(state => state.product);
+  
+  const getAllProduct = async (keyword = "", currentPerPage = 1, price = [0, 25000],category,rating = 0) => {
     try {
       await dispatch(allProductRequest())
-      const { data } = await axios('http://localhost:8000/api/v1/products')
-      await dispatch(allProductSeccess({ product: data.products, productsCount: data.productCount }))
+
+      let link = `http://localhost:8000/api/v1/products?keyword=${keyword}&page=${currentPerPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${rating}`
+      
+      if(category){
+        link =  `http://localhost:8000/api/v1/products?keyword=${keyword}&page=${currentPerPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}`
+      }
+
+      const { data } = await axios(link)
+
+      await dispatch(allProductSuccess({ product: data.products, productsCount: data.productCount, resultPerPage: data.resultPerPage, filterProductCount: data.filterProductCount }))
+     
     } catch (error) {
-      console.log(error)
-      dispatch(allProductFail({ error: error.response }))
+      dispatch(allProductFail({ error: error.response.data }))
     }
   }
-  useEffect(() => {
-    getAllProduct()
-  }, [dispatch])
+  const [currentPerPage, SetCurrentPerPage] = useState(1)
 
+  const currentPerPageNo = (e, value) => {
+    SetCurrentPerPage(value)
+  }
+
+  const fetchPrice = (price) => {
+    setSliderPrice(price)
+  }
+
+
+  const { keyword } = useParams();
+
+  useEffect(() => {
+    getAllProduct(keyword, currentPerPage, sliderPrice.price,sliderPrice.category,sliderPrice.rating)
+  }, [dispatch, keyword, currentPerPage, sliderPrice])
 
 
 
 
   const [openFilter, setOpenFilter] = useState(false);
-  const context = useContext(storeContext);
-  // const {filter,product} = context;
-
 
 
   const handleOpenFilter = () => {
@@ -48,7 +67,6 @@ export default function ProductsPage() {
   const handleCloseFilter = () => {
     setOpenFilter(false);
   };
-
   return (
     <>
       <Helmet>
@@ -66,12 +84,16 @@ export default function ProductsPage() {
                 openFilter={openFilter}
                 onOpenFilter={handleOpenFilter}
                 onCloseFilter={handleCloseFilter}
+                fetchPrice={fetchPrice}
               />
             </Stack>
           </Stack>
 
           <ProductList products={product} />
         </Container>}
+      <Stack className='pagination' spacing={3}> 
+        <Pagination count={Math.ceil(productsCount / resultPerPage)} onChange={currentPerPageNo} shape="rounded" color='primary' />
+      </Stack>
     </>
   );
 }
